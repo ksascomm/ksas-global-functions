@@ -196,8 +196,8 @@ function restrict_blocks( $allowed_blocks ) {
 				'core/paragraph',
 				'core/heading',
 				'core/list',
+				'core/list-item',
 				'core/quote',
-				'core/file',
 				'core/button',
 				'core/separator',
 				'core/embed',
@@ -221,11 +221,33 @@ function restrict_blocks( $allowed_blocks ) {
 	}
 	return $allowed_blocks;
 }
+
+/**
+ * Update WP-Admin CSS: remove h1, h5, h6 heading block options
+ *
+ * @link https://davidwalsh.name/add-custom-css-wordpress-admin
+ */
+function admin_style() {
+	if ( ! is_super_admin() ) {
+		?>
+	<style type="text/css">
+		.components-button.components-dropdown-menu__menu-item.is-icon-only.has-icon[aria-label="Heading 1"], .components-button.components-dropdown-menu__menu-item.is-icon-only.has-icon[aria-label="Heading 5"], .components-button.components-dropdown-menu__menu-item.is-icon-only.has-icon[aria-label="Heading 6"] { 
+			display: none;
+		}
+	</style>
+		<?php
+	}
+}
+add_action( 'admin_head', 'admin_style' );
+
+
 /**
  * Allow file uploads on custom post types
  */
 function ecpt_export_ui_scripts() {
-	global $ecpt_options; ?> 
+	global $ecpt_options;
+	?>
+	 
 		<script type="text/javascript">
 		jQuery(document).ready(function($)
 			{
